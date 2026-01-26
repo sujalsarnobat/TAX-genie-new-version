@@ -38,11 +38,10 @@
 /* Dropzone - Premium Interactive Design */
 .dropzone {
   position: relative;
-  border: 2px dashed rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.02);
+  border: 2px dashed rgba(74, 222, 128, 0.4);
+  background: rgba(74, 222, 128, 0.05);
   border-radius: 24px;
   margin-bottom: 24px;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   backdrop-filter: blur(20px);
   overflow: hidden;
 }
@@ -54,31 +53,16 @@
   border-radius: 24px;
   padding: 2px;
   background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 0.1), 
-    rgba(255, 255, 255, 0.05), 
-    rgba(74, 222, 128, 0.1)
+    rgba(74, 222, 128, 0.2), 
+    rgba(74, 222, 128, 0.1), 
+    rgba(74, 222, 128, 0.15)
   );
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  pointer-events: none;
-}
-
-.dropzone:hover::before {
   opacity: 1;
-}
-
-.dropzone:hover {
-  border-color: rgba(255, 255, 255, 0.3);
-  background: rgba(255, 255, 255, 0.05);
-  transform: translateY(-4px) scale(1.01);
-  box-shadow: 
-    0 20px 60px rgba(0, 0, 0, 0.4),
-    0 0 40px rgba(74, 222, 128, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  pointer-events: none;
 }
 
 .dropzone.active {
@@ -102,11 +86,6 @@
   padding: 64px 32px;
   text-align: center;
   cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.dropzone:hover .dropzone-inner {
-  transform: translateY(-2px);
 }
 
 .dropzone-input {
@@ -125,17 +104,9 @@
 }
 
 .icon-primary {
-  color: #888888;
-  margin-bottom: 20px;
-  transition: all 0.4s ease;
-  filter: drop-shadow(0 4px 12px rgba(136, 136, 136, 0.3));
-}
-
-.dropzone:hover .icon-primary {
   color: #4ADE80;
-  transform: scale(1.1) translateY(-4px);
-  filter: drop-shadow(0 8px 24px rgba(74, 222, 128, 0.5));
-  animation: floatIcon 2s ease-in-out infinite;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 4px 12px rgba(74, 222, 128, 0.4));
 }
 
 @keyframes floatIcon {
@@ -146,13 +117,7 @@
 .icon-success {
   color: #4ADE80;
   margin-bottom: 20px;
-  animation: successPulse 1.5s ease-in-out infinite;
   filter: drop-shadow(0 8px 24px rgba(74, 222, 128, 0.6));
-}
-
-@keyframes successPulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.05); opacity: 0.9; }
 }
 
 .dropzone-title {
@@ -162,44 +127,25 @@
   color: #ffffff;
   letter-spacing: -0.5px;
   margin-bottom: 8px;
-  transition: all 0.3s ease;
-}
-
-.dropzone:hover .dropzone-title {
-  color: #4ADE80;
-  transform: translateY(-2px);
 }
 
 .dropzone-subtitle {
   color: #e0e0e0;
   margin-top: 4px;
   font-size: 1rem;
-  transition: color 0.3s ease;
   font-weight: 500;
-}
-
-.dropzone:hover .dropzone-subtitle {
-  color: #4ADE80;
 }
 
 .dropzone-hint {
   display: inline-block;
   margin-top: 16px;
   padding: 6px 16px;
-  background: rgba(74, 222, 128, 0.1);
-  border: 1px solid rgba(74, 222, 128, 0.3);
-  border-radius: 20px;
-  color: #4ADE80;
-  font-size: 0.85rem;
-  transition: all 0.3s ease;
-  font-weight: 600;
-}
-
-.dropzone:hover .dropzone-hint {
   background: rgba(74, 222, 128, 0.2);
-  border-color: #4ADE80;
+  border: 1px solid rgba(74, 222, 128, 0.5);
+  border-radius: 20px;
   color: #ffffff;
-  transform: translateY(-2px);
+  font-size: 0.85rem;
+  font-weight: 600;
 }
 
 /* Uploading State */
@@ -214,12 +160,7 @@
 }
 
 .dropzone .dropzone-title {
-  animation: pulseFade 1.5s ease-in-out infinite;
-}
-
-@keyframes pulseFade {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+  opacity: 1;
 }
 
 /* Form Card */
@@ -315,29 +256,14 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   cursor: pointer;
   position: relative;
 }
 
-.obsidian-lift-button:hover {
-  background: #000000;
-  transform: translateY(-4px);
-  box-shadow: 
-    0 20px 50px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(255, 255, 255, 0.1);
-}
-
-.obsidian-lift-button:active {
-  transform: translateY(-2px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-}
-
 .obsidian-lift-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  transform: none;
 }
 
 /* Old button styles - kept for backwards compatibility */
@@ -348,19 +274,10 @@
   font-weight: 600;
   padding: 14px 36px;
   border-radius: 12px;
-  transition: all 0.3s ease;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(10px);
   text-transform: lowercase;
   letter-spacing: 0.5px;
-}
-
-.btn-calculate:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.3);
-  color: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
 }
 
 .btn-calculate:disabled {
