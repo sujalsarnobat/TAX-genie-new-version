@@ -1,7 +1,5 @@
 import React from 'react';
 import TaxForm from '../../components/TaxForm';
-import Header from '../../components/header/Header';
-import Footer from '../../components/footer/Footer';
 import { Container, Row, Col } from 'react-bootstrap';
 import { FileText, Zap, Target, Shield, Clock, Award, TrendingDown } from 'lucide-react';
 import './TaxCalculatorPage.css';
@@ -9,7 +7,6 @@ import './TaxCalculatorPage.css';
 const TaxCalculatorPage = () => {
   return (
     <div className="tax-calculator-page">
-      <Header />
       
       {/* Hero Section */}
       <section className="hero-section">
@@ -159,8 +156,6 @@ const TaxCalculatorPage = () => {
           </div>
         </Container>
       </section>
-
-      <Footer />
     </div>
   );
 };
