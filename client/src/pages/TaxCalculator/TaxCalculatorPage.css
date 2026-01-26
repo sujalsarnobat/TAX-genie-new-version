@@ -142,6 +142,11 @@
   position: relative;
 }
 
+.calculator-section .container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
 /* ==================== PROCESS SECTION ==================== */
 .process-section {
   padding: 100px 0;

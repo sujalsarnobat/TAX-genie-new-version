@@ -7,8 +7,10 @@
 }
 
 .tax-form-container {
-  max-width: 1024px;
+  max-width: 900px;
   margin: 0 auto;
+  width: 100%;
+  padding: 0 16px;
 }
 
 .tax-form-header {
@@ -224,10 +226,12 @@
 .tax-form-card {
   border-radius: 16px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-  margin-bottom: 24px;
+  margin: 0 auto 24px;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(20px);
+  max-width: 100%;
+  width: 100%;
 }
 
 .card-title {
@@ -383,5 +387,9 @@
   
   .dropzone-inner {
     padding: 32px 16px;
+  }
+  
+  .tax-form-container {
+    padding: 0 12px;
   }
 }
