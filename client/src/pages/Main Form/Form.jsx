@@ -266,8 +266,9 @@ function FormFilling() {
 
     setHeadIncome(updatedTotalIncome);
 
-    //Tax calculation
-    const StandardDeductions = 50000;
+    // Tax calculation
+    // Standard Deduction increased to Rs 75,000 in Budget 2024-25
+    const StandardDeductions = 75000;
 
     const calculateFinalTax = () => {
       const totalIncome =
@@ -316,6 +317,7 @@ function FormFilling() {
     };
 
     // Function to calculate old regime tax
+    // Old Regime 2025: Slabs unchanged, rebate u/s 87A up to 5 lakh
     const calculateOldRegimeTax = (income) => {
       const TAX_REBATE = {
         old: 500000,
@@ -332,6 +334,11 @@ function FormFilling() {
       let totalTax = 0;
       const OldtaxDetails = {};
 
+      // Old Regime Slabs:
+      // 0 - 2.5 lakh: 0%
+      // 2.5 - 5 lakh: 5%
+      // 5 - 10 lakh: 20%
+      // Above 10 lakh: 30%
       if (income >= TAX_REBATE.old) {
         OldtaxDetails.slab1 = calculateSlabTax(Math.min(income, 250000), 0);
         totalTax += OldtaxDetails.slab1;
@@ -361,9 +368,11 @@ function FormFilling() {
       return { Tax, ceSS };
     };
 
+    // New Regime 2025 (Budget 2024-25)
+    // Tax rebate u/s 87A increased to 12 lakh (effectively no tax up to 12 lakh)
     const calculateNewRegimeTax = (income) => {
       const TAX_REBATE_NEW = {
-        new: 700000,
+        new: 1200000, // Increased from 7 lakh to 12 lakh
       };
 
       const calculateSlabTax = (income, rate) => income * rate;
@@ -372,34 +381,60 @@ function FormFilling() {
 
       const NewtaxDetails = {};
 
+      // New Regime 2025 Slabs:
+      // 0 - 4 lakh: 0%
+      // 4 - 8 lakh: 5%
+      // 8 - 12 lakh: 10%
+      // 12 - 16 lakh: 15%
+      // 16 - 20 lakh: 20%
+      // 20 - 24 lakh: 25%
+      // Above 24 lakh: 30%
       if (income >= TAX_REBATE_NEW.new) {
-        NewtaxDetails.slab1 = calculateSlabTax(Math.min(income, 300000), 0);
+        // 0 - 4 lakh: 0%
+        NewtaxDetails.slab1 = calculateSlabTax(Math.min(income, 400000), 0);
         totalTax += NewtaxDetails.slab1;
+        
+        // 4 - 8 lakh: 5%
         NewtaxDetails.slab2 = calculateSlabTax(
-          Math.max(Math.min(income - 300000, 300000), 0),
+          Math.max(Math.min(income - 400000, 400000), 0),
           0.05
         );
         totalTax += NewtaxDetails.slab2;
+        
+        // 8 - 12 lakh: 10%
         NewtaxDetails.slab3 = calculateSlabTax(
-          Math.max(Math.min(income - 600000, 300000), 0),
+          Math.max(Math.min(income - 800000, 400000), 0),
           0.1
         );
         totalTax += NewtaxDetails.slab3;
+        
+        // 12 - 16 lakh: 15%
         NewtaxDetails.slab4 = calculateSlabTax(
-          Math.max(Math.min(income - 900000, 300000), 0),
+          Math.max(Math.min(income - 1200000, 400000), 0),
           0.15
         );
         totalTax += NewtaxDetails.slab4;
+        
+        // 16 - 20 lakh: 20%
         NewtaxDetails.slab5 = calculateSlabTax(
-          Math.max(Math.min(income - 1200000, 300000), 0),
+          Math.max(Math.min(income - 1600000, 400000), 0),
           0.2
         );
         totalTax += NewtaxDetails.slab5;
+        
+        // 20 - 24 lakh: 25%
         NewtaxDetails.slab6 = calculateSlabTax(
-          Math.max(income - 1500000, 0),
-          0.3
+          Math.max(Math.min(income - 2000000, 400000), 0),
+          0.25
         );
         totalTax += NewtaxDetails.slab6;
+        
+        // Above 24 lakh: 30%
+        NewtaxDetails.slab7 = calculateSlabTax(
+          Math.max(income - 2400000, 0),
+          0.3
+        );
+        totalTax += NewtaxDetails.slab7;
       }
 
       localStorage.setItem("NewtaxDetails", JSON.stringify(NewtaxDetails));

@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-// PersonalInfo.js
+// PersonalInfo.js - Enhanced Modern Design
 import "../Accordion.css";
 import React, { useState, useEffect } from "react";
 import "../Form.css";
+import "./PersonalInfo.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
@@ -13,7 +14,8 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import States from "../../../utils/States.json";
 import Accordion from "react-bootstrap/Accordion";
 import AccordionBody from "react-bootstrap/esm/AccordionBody";
-import { FaRegCircleUser, FaRegAddressCard } from "react-icons/fa6";
+import { FaRegCircleUser, FaRegAddressCard, FaLock } from "react-icons/fa6";
+import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import axios from "axios";
 
 const PersonalInfo = ({ formData, onChange, handleLimitFunction }) => {
@@ -37,6 +39,50 @@ const PersonalInfo = ({ formData, onChange, handleLimitFunction }) => {
   } = formData;
 
   const [sameAsAddress, setSameAsAddress] = useState(true);
+  const [validation, setValidation] = useState({
+    pan: { valid: null, message: "" },
+    aadhaar: { valid: null, message: "" },
+    mobile: { valid: null, message: "" },
+    email: { valid: null, message: "" },
+  });
+
+  // Validation functions
+  const validatePAN = (pan) => {
+    const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+    if (!pan) return { valid: null, message: "" };
+    if (panRegex.test(pan)) {
+      return { valid: true, message: "Valid PAN format" };
+    }
+    return { valid: false, message: "Invalid PAN (Format: ABCDE1234F)" };
+  };
+
+  const validateAadhaar = (aadhaar) => {
+    const aadhaarRegex = /^[0-9]{12}$/;
+    if (!aadhaar) return { valid: null, message: "" };
+    if (aadhaarRegex.test(aadhaar)) {
+      return { valid: true, message: "Valid Aadhaar number" };
+    }
+    return { valid: false, message: "Invalid Aadhaar (Must be 12 digits)" };
+  };
+
+  const validateMobile = (mobile) => {
+    const mobileRegex = /^[6-9][0-9]{9}$/;
+    if (!mobile) return { valid: null, message: "" };
+    const cleaned = mobile.replace(/[^0-9]/g, '');
+    if (mobileRegex.test(cleaned)) {
+      return { valid: true, message: "Valid mobile number" };
+    }
+    return { valid: false, message: "Invalid mobile (10 digits, starting with 6-9)" };
+  };
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email) return { valid: null, message: "" };
+    if (emailRegex.test(email)) {
+      return { valid: true, message: "Valid email address" };
+    }
+    return { valid: false, message: "Invalid email format" };
+  };
 
   const Link = ({ id, children, title }) => (
     <OverlayTrigger overlay={<Tooltip id={id}>{title}</Tooltip>}>
@@ -45,14 +91,6 @@ const PersonalInfo = ({ formData, onChange, handleLimitFunction }) => {
       </a>
     </OverlayTrigger>
   );
-
-  const handleGenderChange = (e) => {
-    onChange({ Gender: e.target.value });
-  };
-
-  const handleMarriedChange = (e) => {
-    onChange({ MaritalStatus: e.target.value });
-  };
 
   useEffect(() => {
     const userDataString = localStorage.getItem("userInfo");
@@ -97,9 +135,38 @@ const PersonalInfo = ({ formData, onChange, handleLimitFunction }) => {
   }, []);
 
   return (
-    <div>
+    <div className="personal-info-container">
+      {/* Step Progress Indicator */}
+      <div className="step-progress">
+        <div className="step active">
+          <div className="step-circle">1</div>
+          <span className="step-label">Personal Info</span>
+        </div>
+        <div className="step-line"></div>
+        <div className="step">
+          <div className="step-circle">2</div>
+          <span className="step-label">Documents</span>
+        </div>
+        <div className="step-line"></div>
+        <div className="step">
+          <div className="step-circle">3</div>
+          <span className="step-label">Income</span>
+        </div>
+        <div className="step-line"></div>
+        <div className="step">
+          <div className="step-circle">4</div>
+          <span className="step-label">Review</span>
+        </div>
+        <div className="step-line"></div>
+        <div className="step">
+          <div className="step-circle">5</div>
+          <span className="step-label">Submit</span>
+        </div>
+      </div>
+
       <h1 className="formTitle">Personal Information</h1>
-      <hr style={{ marginBottom: 20 }} />
+      <p className="form-subtitle">Fill in your details accurately as per official documents</p>
+      <hr style={{ marginBottom: 20, borderColor: "rgba(255,255,255,0.1)" }} />
       <Accordion defaultActiveKey="0" flush alwaysOpen>
         <Accordion.Item eventKey="0">
           <Accordion.Header>
@@ -107,12 +174,10 @@ const PersonalInfo = ({ formData, onChange, handleLimitFunction }) => {
               <FaRegCircleUser style={{ height: "2em", width: "2em" }} />
               <div className="HeaderMainDiv">
                 <h2 className="AccordionMainHeading">
-                  {" "}
-                  Permanent Information{" "}
+                  Permanent Information
                 </h2>
                 <p className="accordionSubHeader">
-                  Please provide all info as per your government identity
-                  documents(PAN, Aadhaar etc.)
+                  Basic details as per your official ID
                 </p>
               </div>
             </div>
@@ -202,55 +267,48 @@ const PersonalInfo = ({ formData, onChange, handleLimitFunction }) => {
             </Form.Group>
             <Form.Group as={Col} md="6" className="mb-3">
               <Form.Label>Gender *</Form.Label>
-              <Form.Check
-                style={{ marginLeft: "16px" }}
-                inline
-                type="radio"
-                label="Male"
-                value="Male"
-                checked={Gender === "Male"}
-                onChange={handleGenderChange}
-              />
-              <Form.Check
-                inline
-                style={{ marginLeft: "16px" }}
-                type="radio"
-                label="Female"
-                value="Female"
-                checked={Gender === "Female"}
-                onChange={handleGenderChange}
-              />
+              <div className="pill-button-group">
+                <button
+                  type="button"
+                  className={`pill-button ${Gender === "Male" ? "active" : ""}`}
+                  onClick={() => onChange({ Gender: "Male" })}
+                >
+                  Male
+                </button>
+                <button
+                  type="button"
+                  className={`pill-button ${Gender === "Female" ? "active" : ""}`}
+                  onClick={() => onChange({ Gender: "Female" })}
+                >
+                  Female
+                </button>
+              </div>
             </Form.Group>
             <Form.Group as={Col} md="6" className="mb-3">
               <Form.Label>Marital Status *</Form.Label>
-              <Form.Check
-                style={{ marginLeft: "16px" }}
-                inline
-                type="radio"
-                label="Married"
-                value="Married"
-                checked={MaritalStatus === "Married"}
-                onChange={handleMarriedChange}
-              />
-              <Form.Check
-                inline
-                style={{ marginLeft: "16px" }}
-                type="radio"
-                label="Not Married"
-                value="Not Married"
-                checked={MaritalStatus === "Not Married"}
-                onChange={handleMarriedChange}
-              />
-
-              <Form.Check
-                inline
-                style={{ marginLeft: "16px" }}
-                type="radio"
-                label="Not share"
-                value="Not share"
-                checked={MaritalStatus === "Not share"}
-                onChange={handleMarriedChange}
-              />
+              <div className="pill-button-group">
+                <button
+                  type="button"
+                  className={`pill-button ${MaritalStatus === "Married" ? "active" : ""}`}
+                  onClick={() => onChange({ MaritalStatus: "Married" })}
+                >
+                  Married
+                </button>
+                <button
+                  type="button"
+                  className={`pill-button ${MaritalStatus === "Not Married" ? "active" : ""}`}
+                  onClick={() => onChange({ MaritalStatus: "Not Married" })}
+                >
+                  Unmarried
+                </button>
+                <button
+                  type="button"
+                  className={`pill-button ${MaritalStatus === "Not share" ? "active" : ""}`}
+                  onClick={() => onChange({ MaritalStatus: "Not share" })}
+                >
+                  Prefer not to say
+                </button>
+              </div>
             </Form.Group>
           </AccordionBody>
         </Accordion.Item>
@@ -263,12 +321,10 @@ const PersonalInfo = ({ formData, onChange, handleLimitFunction }) => {
               <FaRegAddressCard style={{ height: "2em", width: "2em" }} />
               <div className="HeaderMainDiv">
                 <h2 className="AccordionMainHeading">
-                  {" "}
-                  Identification & Contact details{" "}
+                  Identification & Contact details
                 </h2>
                 <p className="accordionSubHeader">
-                  Please provide all info as per your government identity
-                  documents(PAN, Aadhaar etc.)
+                  <FaLock className="security-icon" /> Your data is encrypted and securely stored
                 </p>
               </div>
             </div>
@@ -276,36 +332,62 @@ const PersonalInfo = ({ formData, onChange, handleLimitFunction }) => {
           <AccordionBody>
             <Row className="mb-3">
               <Form.Group as={Col} md="6" controlId="formGridEmail">
-                <FloatingLabel
-                  controlId="floatingInput"
-                  label="Aadhar Card Number"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    type="text"
-                    value={AadharNo}
-                    onChange={(e) => {
-                      onChange({ AadharNo: e.target.value });
-                    }}
-                    placeholder="Aadhar Card Number"
-                  />
-                </FloatingLabel>
+                <div className="input-with-validation">
+                  <FloatingLabel
+                    controlId="floatingInput"
+                    label="Aadhaar Card Number *"
+                    className="mb-3"
+                  >
+                    <Form.Control
+                      type="text"
+                      value={AadharNo}
+                      onChange={(e) => {
+                        onChange({ AadharNo: e.target.value });
+                        setValidation({
+                          ...validation,
+                          aadhaar: validateAadhaar(e.target.value),
+                        });
+                      }}
+                      placeholder="Aadhaar Card Number"
+                      className={validation.aadhaar.valid === false ? "input-error" : validation.aadhaar.valid === true ? "input-success" : ""}
+                    />
+                  </FloatingLabel>
+                  {validation.aadhaar.valid !== null && (
+                    <div className={`validation-message ${validation.aadhaar.valid ? "success" : "error"}`}>
+                      {validation.aadhaar.valid ? <FaCheckCircle /> : <FaTimesCircle />}
+                      <span>{validation.aadhaar.message}</span>
+                    </div>
+                  )}
+                </div>
               </Form.Group>
               <Form.Group as={Col} controlId="formGridEmail">
-                <FloatingLabel
-                  controlId="floatingInput"
-                  label="PanCard Number"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    type="text"
-                    value={PanCard}
-                    onChange={(e) => {
-                      onChange({ PanCard: e.target.value });
-                    }}
-                    placeholder="PanCard Number"
-                  />
-                </FloatingLabel>
+                <div className="input-with-validation">
+                  <FloatingLabel
+                    controlId="floatingInput"
+                    label="PAN Card Number *"
+                    className="mb-3"
+                  >
+                    <Form.Control
+                      type="text"
+                      value={PanCard}
+                      onChange={(e) => {
+                        onChange({ PanCard: e.target.value.toUpperCase() });
+                        setValidation({
+                          ...validation,
+                          pan: validatePAN(e.target.value),
+                        });
+                      }}
+                      placeholder="PAN Card Number"
+                      className={validation.pan.valid === false ? "input-error" : validation.pan.valid === true ? "input-success" : ""}
+                    />
+                  </FloatingLabel>
+                  {validation.pan.valid !== null && (
+                    <div className={`validation-message ${validation.pan.valid ? "success" : "error"}`}>
+                      {validation.pan.valid ? <FaCheckCircle /> : <FaTimesCircle />}
+                      <span>{validation.pan.message}</span>
+                    </div>
+                  )}
+                </div>
               </Form.Group>
             </Row>
             <Row className="mb-3">
@@ -315,15 +397,33 @@ const PersonalInfo = ({ formData, onChange, handleLimitFunction }) => {
                 md="6"
                 controlId="formGridEmail"
               >
-                <Form.Label>Mobile Number *</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={MobileNo}
-                  placeholder="+91....."
-                  onChange={(e) => {
-                    onChange({ MobileNo: e.target.value });
-                  }}
-                />
+                <div className="input-with-validation">
+                  <FloatingLabel
+                    controlId="floatingInput"
+                    label="Mobile Number *"
+                    className="mb-3"
+                  >
+                    <Form.Control
+                      type="text"
+                      value={MobileNo}
+                      placeholder="Mobile Number"
+                      onChange={(e) => {
+                        onChange({ MobileNo: e.target.value });
+                        setValidation({
+                          ...validation,
+                          mobile: validateMobile(e.target.value),
+                        });
+                      }}
+                      className={validation.mobile.valid === false ? "input-error" : validation.mobile.valid === true ? "input-success" : ""}
+                    />
+                  </FloatingLabel>
+                  {validation.mobile.valid !== null && (
+                    <div className={`validation-message ${validation.mobile.valid ? "success" : "error"}`}>
+                      {validation.mobile.valid ? <FaCheckCircle /> : <FaTimesCircle />}
+                      <span>{validation.mobile.message}</span>
+                    </div>
+                  )}
+                </div>
               </Form.Group>
               <Form.Group
                 as={Col}
@@ -331,15 +431,33 @@ const PersonalInfo = ({ formData, onChange, handleLimitFunction }) => {
                 md="6"
                 controlId="formGridEmail"
               >
-                <Form.Label>Email *</Form.Label>
-                <Form.Control
-                  type="email"
-                  value={Email}
-                  placeholder="xyz@mail.com"
-                  onChange={(e) => {
-                    onChange({ Email: e.target.value });
-                  }}
-                />
+                <div className="input-with-validation">
+                  <FloatingLabel
+                    controlId="floatingInput"
+                    label="Email *"
+                    className="mb-3"
+                  >
+                    <Form.Control
+                      type="email"
+                      value={Email}
+                      placeholder="Email"
+                      onChange={(e) => {
+                        onChange({ Email: e.target.value });
+                        setValidation({
+                          ...validation,
+                          email: validateEmail(e.target.value),
+                        });
+                      }}
+                      className={validation.email.valid === false ? "input-error" : validation.email.valid === true ? "input-success" : ""}
+                    />
+                  </FloatingLabel>
+                  {validation.email.valid !== null && (
+                    <div className={`validation-message ${validation.email.valid ? "success" : "error"}`}>
+                      {validation.email.valid ? <FaCheckCircle /> : <FaTimesCircle />}
+                      <span>{validation.email.message}</span>
+                    </div>
+                  )}
+                </div>
               </Form.Group>
             </Row>
             <Form.Group className="mb-3" controlId="formGridAddress1">
@@ -358,9 +476,9 @@ const PersonalInfo = ({ formData, onChange, handleLimitFunction }) => {
             </Form.Group>
             <Form.Group className="mb-3" controlId="formGridAddress2">
               <Form.Label style={{ display: "flex", alignItems: "center" }}>
-                Permanant Address{" "}
+                Permanent Address{" "}
                 <span style={{ marginLeft: "10px" }}>
-                  <Link id="t-2" title="DeSelect if the address is different">
+                  <Link id="t-2" title="Check if same as current address">
                     <CheckBox
                       onChange={(e) => {
                         setSameAsAddress(e.target.checked);
@@ -375,17 +493,24 @@ const PersonalInfo = ({ formData, onChange, handleLimitFunction }) => {
                       checked={sameAsAddress}
                     />
                   </Link>
+                  <span className="same-address-label">Same as current address</span>
                 </span>
               </Form.Label>
               <Form.Control
-                placeholder="locality, city"
+                placeholder="Permanent address"
                 type="text"
                 value={sameAsAddress ? Address : PermanentAddress}
                 onChange={(e) => {
                   onChange({ PermanentAddress: e.target.value });
                 }}
                 disabled={sameAsAddress}
+                className={sameAsAddress ? "input-locked" : ""}
               />
+              {sameAsAddress && (
+                <div className="address-locked-message">
+                  <FaLock /> Address locked (same as current)
+                </div>
+              )}
             </Form.Group>
             <Row className="mb-3">
               <Form.Group as={Col} controlId="formGridCity">
@@ -433,6 +558,17 @@ const PersonalInfo = ({ formData, onChange, handleLimitFunction }) => {
           </AccordionBody>
         </Accordion.Item>
       </Accordion>
+
+      {/* Sticky CTA Button */}
+      <div className="cta-section">
+        <button className="cta-button" type="button" onClick={() => {
+          // Add your save and continue logic here
+          console.log("Saving and continuing...");
+        }}>
+          Save & Continue
+          <span className="arrow">→</span>
+        </button>
+      </div>
     </div>
   );
 };
