@@ -1,0 +1,30 @@
+.swipe-letters-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  user-select: none;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.swipe-letters-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.swipe-letter-wrapper {
+  position: relative;
+  display: inline-block;
+  height: 1em;
+  overflow: hidden;
+  line-height: 1;
+}
+
+.swipe-letter-grid {
+  display: grid;
+  grid-auto-rows: 1em;
+  will-change: transform;
+}

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import {toast } from 'react-toastify';
 import axios from 'axios';
 import { Spinner } from "react-bootstrap";
+import CircleExpandButton from "../mis/CircleExpandButton/CircleExpandButton";
 
 function SignUp() {
   const [name, setName] = useState("");
@@ -89,19 +90,17 @@ function SignUp() {
         }}
       />
       <div className="button">
-        <button className="login-button" onClick={handleClick}>
-          {loading && (
-            <Spinner
-              as="span"
-              animation="grow"
-              size="sm"
-              role="status"
-              aria-hidden="true"
-              style={{ marginRight: 20, color: "#4d7298" }}
-            />
-          )}
-          {loading ? "Loading..." : "Sign Up"}
-        </button>
+        <CircleExpandButton
+          text={loading ? "Loading..." : "Sign Up"}
+          onClick={handleClick}
+          bgColor="transparent"
+          hoverBgColor="#ffffff"
+          textColor="#ffffff"
+          hoverTextColor="#0e0e0e"
+          borderColor="#ffffff"
+          showArrow={!loading}
+          className="login-button"
+        />
         <span className="password-toggle" onClick={togglePasswordVisibility}>
           {showPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
         </span>

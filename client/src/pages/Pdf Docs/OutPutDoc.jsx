@@ -48,7 +48,7 @@ const OldtaxDetailsFromLocalStorage = localStorage.getItem("OldtaxDetails");
 const OldtaxDetails = OldtaxDetailsFromLocalStorage ? JSON.parse(OldtaxDetailsFromLocalStorage) : null;
 
     const OldSlabs = [
-      { label: "0 to 3 lakh", rate: "0%", key: "slab1" },
+      { label: "0 to 2.5 lakh", rate: "0%", key: "slab1" },
       { label: "2.5 lakh to 5 lakh", rate: "5%", key: "slab2" },
       { label: "5 lakh to 10 lakh", rate: "20%", key: "slab3" },
       { label: "10 lakh and above", rate: "30%", key: "slab4" },
@@ -57,13 +57,15 @@ const OldtaxDetails = OldtaxDetailsFromLocalStorage ? JSON.parse(OldtaxDetailsFr
     const NewtaxDetailsFromLocalStorage = localStorage.getItem("NewtaxDetails");
     const NewtaxDetails = NewtaxDetailsFromLocalStorage ? JSON.parse(NewtaxDetailsFromLocalStorage) : null;
 
+    // New Regime 2025 (Budget 2024-25) Tax Slabs
     const newRegimeSlabs = [
-      { label: "0 to 3 lakh", rate: "0%", key: "slab1" },
-      { label: "3 lakh to 6 lakh", rate: "5%", key: "slab2" },
-      { label: "6 lakh to 9 lakh", rate: "10%", key: "slab3" },
-      { label: "9 lakh to 12 lakh", rate: "15%", key: "slab4" },
-      { label: "12 lakh to 15 lakh", rate: "20%", key: "slab5" },
-      { label: "15 lakh and above", rate: "30%", key: "slab6" },
+      { label: "0 to 4 lakh", rate: "0%", key: "slab1" },
+      { label: "4 lakh to 8 lakh", rate: "5%", key: "slab2" },
+      { label: "8 lakh to 12 lakh", rate: "10%", key: "slab3" },
+      { label: "12 lakh to 16 lakh", rate: "15%", key: "slab4" },
+      { label: "16 lakh to 20 lakh", rate: "20%", key: "slab5" },
+      { label: "20 lakh to 24 lakh", rate: "25%", key: "slab6" },
+      { label: "24 lakh and above", rate: "30%", key: "slab7" },
     ];
 
   // Now 'sampleData' is a constant holding the JSON object.
@@ -145,11 +147,11 @@ const OldtaxDetails = OldtaxDetailsFromLocalStorage ? JSON.parse(OldtaxDetailsFr
                   <p className="color-white mb-1">
                     Invoice Number <span>#{invoiceNumber}</span>
                   </p>
-                  <p className="color-white mb-0">
+                  <p className="color-white mb-1">
                     Invoice Date <span>{invoiceDate}</span>
                   </p>
                   <p className="color-white mb-1">
-                    AY <span>2023-24</span>
+                    AY <span>2025-26</span>
                   </p>
                 </div>
               </div>

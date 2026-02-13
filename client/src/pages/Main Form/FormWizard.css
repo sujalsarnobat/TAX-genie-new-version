@@ -1,0 +1,505 @@
+/* FormWizard.css - Premium CRED/Neo-Brutalism Design */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap');
+
+/* Container */
+.wizard-container {
+  background: #0a0a0a;
+  min-height: 100vh;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Progress Bar */
+.progress-bar-container {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 4px;
+  background: #1a1a1a;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: #4ADE80;
+  box-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
+}
+
+/* Step Indicator */
+.step-indicator {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 32px 24px;
+  background: #0a0a0a;
+  border-bottom: 1px solid #1a1a1a;
+  overflow-x: auto;
+}
+
+.step-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  border: 2px solid #2a2a2a;
+  border-radius: 0;
+  cursor: pointer;
+  background: transparent;
+}
+
+.step-item.active {
+  border-color: #4ADE80;
+  background: rgba(74, 222, 128, 0.05);
+}
+
+.step-item.completed {
+  border-color: #4ADE80;
+  background: rgba(74, 222, 128, 0.1);
+}
+
+.step-item.completed .step-icon-wrapper {
+  background: #4ADE80;
+  color: #000;
+}
+
+.step-icon-wrapper {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #4ADE80;
+  color: #4ADE80;
+  flex-shrink: 0;
+}
+
+.step-item.active .step-icon-wrapper {
+  background: #4ADE80;
+  color: #000;
+}
+
+.step-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.step-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #f5f5f5;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.step-subtitle {
+  font-size: 0.75rem;
+  color: #707070;
+  font-weight: 500;
+}
+
+.step-item.active .step-title,
+.step-item.completed .step-title {
+  color: #4ADE80;
+}
+
+/* Wizard Content */
+.wizard-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+/* Wizard Card - Glassmorphism */
+.wizard-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 2px solid #2a2a2a;
+  backdrop-filter: blur(20px);
+  padding: 0;
+}
+
+/* Step Content */
+.step-content {
+  padding: 48px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Step Header */
+.step-header {
+  margin-bottom: 40px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.step-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #f5f5f5;
+  margin: 0 0 8px;
+  letter-spacing: -1px;
+}
+
+.step-description {
+  font-size: 1rem;
+  color: #707070;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Form Grid */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+}
+
+/* Form Field */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-field.full-width {
+  grid-column: 1 / -1;
+}
+
+/* Field Label */
+.field-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #f5f5f5;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.limit {
+  font-size: 0.75rem;
+  color: #4ADE80;
+  font-weight: 600;
+  text-transform: none;
+}
+
+/* Field Input - Neo-Brutalist Style */
+.field-input {
+  width: 100%;
+  padding: 16px 18px;
+  background: #0a0a0a;
+  border: 2px solid #2a2a2a;
+  border-radius: 0;
+  color: #f5f5f5;
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  outline: none;
+}
+
+.field-input::placeholder {
+  color: #505050;
+  font-weight: 400;
+}
+
+.field-input:focus {
+  border-color: #4ADE80;
+  background: #0f0f0f;
+  box-shadow: 4px 4px 0px #4ADE80;
+}
+
+.field-input:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: #0a0a0a;
+}
+
+.field-input.currency {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Select */
+.field-input option {
+  background: #0a0a0a;
+  color: #f5f5f5;
+  padding: 12px;
+}
+
+/* Error State */
+.form-field.error .field-input {
+  border-color: #ef4444;
+  box-shadow: 4px 4px 0px #ef4444;
+  animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+}
+
+.form-field.error .field-label {
+  color: #ef4444;
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: #ef4444;
+  font-weight: 600;
+  padding: 8px 12px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  margin-top: 4px;
+}
+
+/* Field Hint */
+.field-hint {
+  font-size: 0.75rem;
+  color: #505050;
+  font-weight: 500;
+}
+
+/* Checkbox */
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: #4ADE80;
+  cursor: pointer;
+}
+
+.checkbox-label-text {
+  font-size: 0.85rem;
+  color: #4ADE80;
+  font-weight: 600;
+}
+
+/* Summary Card */
+.summary-card {
+  margin-top: 40px;
+  padding: 24px;
+  background: rgba(74, 222, 128, 0.05);
+  border: 2px solid #4ADE80;
+}
+
+.summary-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #f5f5f5;
+  margin: 0 0 16px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+  color: #a0a0a0;
+}
+
+.summary-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #4ADE80;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Navigation */
+.wizard-navigation {
+  display: flex;
+  align-items: center;
+  padding: 24px 48px;
+  background: #0a0a0a;
+  border-top: 2px solid #2a2a2a;
+}
+
+.nav-spacer {
+  flex: 1;
+}
+
+/* Buttons - Neo-Brutalist */
+.btn-primary,
+.btn-secondary,
+.btn-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 32px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #4ADE80;
+  color: #000;
+  border: 2px solid #000;
+  box-shadow: 4px 4px 0px #000;
+}
+
+.btn-primary:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px #000;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #f5f5f5;
+  border: 2px solid #2a2a2a;
+  box-shadow: none;
+}
+
+.btn-secondary:active {
+  background: #1a1a1a;
+}
+
+.btn-submit {
+  background: #4ADE80;
+  color: #000;
+  border: 2px solid #000;
+  box-shadow: 6px 6px 0px #000;
+  padding: 18px 40px;
+  font-size: 1rem;
+}
+
+.btn-submit:active {
+  transform: translate(3px, 3px);
+  box-shadow: 0px 0px 0px #000;
+}
+
+.btn-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 4px 4px 0px #000;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .step-indicator {
+    gap: 4px;
+    padding: 20px 16px;
+  }
+
+  .step-item {
+    padding: 10px 14px;
+  }
+
+  .step-text {
+    display: none;
+  }
+
+  .step-icon-wrapper {
+    width: 36px;
+    height: 36px;
+  }
+
+  .wizard-content {
+    padding: 32px 16px 100px;
+  }
+
+  .step-content {
+    padding: 32px 20px;
+  }
+
+  .step-heading {
+    font-size: 1.75rem;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .wizard-navigation {
+    padding: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .nav-spacer {
+    display: none;
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-submit {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+/* Number Input - Remove Arrows */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Date Input */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* Scrollbar */
+.wizard-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.wizard-container::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+.wizard-container::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+}
+
+.wizard-container::-webkit-scrollbar-thumb:hover {
+  background: #3a3a3a;
+}

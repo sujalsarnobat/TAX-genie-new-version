@@ -1,0 +1,108 @@
+@import url("../../variables.css");
+
+/* =====================================================
+   CRED-Style FAQ - #0e0e0e Background, #333 Borders
+   ===================================================== */
+.faq-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Serif Title */
+.faq-container .faq-title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 3rem;
+  color: #f5f5f5;
+  letter-spacing: -0.02em;
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+/* FAQ Row styling - Minimal Dark */
+.faq-container .faq-row-wrapper {
+  background: transparent;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+/* #333 border between items */
+.faq-container .faq-row {
+  border-bottom: 1px solid #333333;
+  transition: all 0.3s ease;
+}
+
+.faq-container .faq-row:last-child {
+  border-bottom: none;
+}
+
+.faq-container .faq-row:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.faq-container .row-title {
+  padding: 24px 0;
+  cursor: pointer;
+  font-family: "Inter", "Manrope", sans-serif;
+  font-weight: 500;
+}
+
+.faq-container .row-content {
+  background: transparent;
+  line-height: 1.8;
+  font-family: "Inter", "Manrope", sans-serif;
+}
+
+/* Dark mode - same style */
+[data-theme="dark"] .faq-container .faq-row-wrapper {
+  background: transparent;
+  border-color: transparent;
+}
+
+[data-theme="dark"] .faq-container .faq-row:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+[data-theme="dark"] .faq-container .row-content {
+  background: transparent;
+}
+
+/* Override inline styles for CRED theme */
+.faq-container .faq-title,
+.faq-container .row-title-text {
+  color: #f5f5f5 !important;
+}
+
+/* Grey secondary text (#888888) */
+.faq-container .row-content-text {
+  color: #888888 !important;
+}
+
+/* Animation for expanding rows */
+.faq-container .row-content {
+  animation: fadeInContent 0.3s ease-out;
+}
+
+@keyframes fadeInContent {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Arrow icon styling */
+.faq-container .icon-wrapper {
+  transition: transform 0.3s ease;
+}
+
+/* White icon instead of blue */
+.faq-container .icon-wrapper svg {
+  fill: #f5f5f5 !important;
+}

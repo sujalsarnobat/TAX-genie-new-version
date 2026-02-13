@@ -1,0 +1,364 @@
+/* Carousel3D.css - Premium CRED 3D Carousel */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap');
+
+.carousel-section {
+  background: #0a0a0a;
+  padding: 100px 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Ambient Glow Background */
+.carousel-section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(74, 222, 128, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Header */
+.carousel-header {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 80px;
+  position: relative;
+  z-index: 10;
+}
+
+.carousel-badge {
+  display: inline-block;
+  padding: 8px 20px;
+  background: rgba(74, 222, 128, 0.1);
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  color: #4ADE80;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 24px;
+}
+
+.carousel-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #f5f5f5;
+  margin: 0 0 16px;
+  letter-spacing: -1px;
+  line-height: 1.2;
+}
+
+.carousel-subtitle {
+  font-size: 1.1rem;
+  color: #707070;
+  margin: 0;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+/* Carousel Container */
+.carousel-container {
+  position: relative;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+.carousel-viewport {
+  perspective: 1200px;
+  perspective-origin: center center;
+  height: 450px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Card - Glassmorphism + Neo-Brutalist */
+.carousel-card {
+  position: absolute;
+  width: 320px;
+  height: 380px;
+  background: rgba(20, 20, 20, 0.85);
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 0;
+  padding: 40px 32px;
+  cursor: pointer;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.carousel-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+.carousel-card.active {
+  border-color: rgba(74, 222, 128, 0.5);
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(74, 222, 128, 0.15);
+}
+
+/* Card Glow */
+.card-glow {
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  opacity: 0.15;
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+.carousel-card.active .card-glow {
+  opacity: 0.25;
+}
+
+/* Card Icon */
+.card-icon {
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0;
+  color: #000;
+  margin-bottom: 28px;
+  position: relative;
+  z-index: 1;
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.3);
+}
+
+/* Card Title */
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #FFFFFF !important;
+  margin: 0 0 12px;
+  letter-spacing: -0.5px;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Card Description */
+.card-desc {
+  font-size: 0.95rem;
+  color: #FFFFFF !important;
+  line-height: 1.6;
+  margin: 0 0 auto;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* Card CTA */
+.card-cta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #FFFFFF;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-top: 24px;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.carousel-card.active .card-cta {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cta-arrow {
+  transition: transform 0.3s ease;
+}
+
+.carousel-card.active:hover .cta-arrow {
+  transform: translateX(4px);
+}
+
+/* Navigation Arrows */
+.carousel-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 56px;
+  height: 56px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0;
+  color: #f5f5f5;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  transition: all 0.3s ease;
+}
+
+.carousel-nav:hover {
+  background: #4ADE80;
+  border-color: #4ADE80;
+  color: #000;
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.3);
+}
+
+.carousel-nav:active {
+  transform: translateY(-50%) translate(2px, 2px);
+  box-shadow: none;
+}
+
+.carousel-nav.prev {
+  left: 40px;
+}
+
+.carousel-nav.next {
+  right: 40px;
+}
+
+/* Dots */
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 48px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.dot:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.dot.active {
+  background: #4ADE80;
+  border-color: #4ADE80;
+  box-shadow: 0 0 12px rgba(74, 222, 128, 0.5);
+  width: 32px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .carousel-nav.prev {
+    left: 20px;
+  }
+  .carousel-nav.next {
+    right: 20px;
+  }
+  
+  .carousel-card {
+    width: 280px;
+    height: 350px;
+    padding: 32px 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .carousel-section {
+    padding: 60px 16px;
+  }
+  
+  .carousel-header {
+    margin-bottom: 40px;
+  }
+  
+  .carousel-title {
+    font-size: 2rem;
+  }
+  
+  .carousel-subtitle {
+    font-size: 1rem;
+  }
+  
+  .carousel-viewport {
+    height: 400px;
+  }
+  
+  .carousel-card {
+    width: 260px;
+    height: 340px;
+    padding: 28px 20px;
+  }
+  
+  .card-icon {
+    width: 56px;
+    height: 56px;
+  }
+  
+  .card-icon svg {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .card-title {
+    font-size: 1.25rem;
+  }
+  
+  .card-desc {
+    font-size: 0.9rem;
+  }
+  
+  .carousel-nav {
+    width: 44px;
+    height: 44px;
+    font-size: 1.2rem;
+  }
+  
+  .carousel-nav.prev {
+    left: 10px;
+  }
+  
+  .carousel-nav.next {
+    right: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-card {
+    width: 240px;
+    height: 320px;
+  }
+  
+  .carousel-nav {
+    display: none;
+  }
+}

@@ -2,6 +2,7 @@ import React from "react";
 import Card from "react-bootstrap/Card";
 import { useNavigate } from "react-router-dom";
 import "./Card.css";
+import CircleExpandButton from "../CircleExpandButton/CircleExpandButton";
 
 function truncateText(text, maxLength) {
   if (text.length <= maxLength) {
@@ -41,23 +42,17 @@ function BlogCard(props) {
         <Card.Text style={{ color: "var(--blue-dark)", fontSize: "1.12rem" }}>
           {truncatedBody}
         </Card.Text>
-        <button
+        <CircleExpandButton
+          text="Read More"
           onClick={handleButtonClick}
-          // style={{
-          //   padding: "0 30px",
-          //   width: "auto",
-          //   height: "50px",
-          //   borderRadius: "30px",
-          //   fontWeight: "600",
-          //   fontSize: "1.15rem",
-          //   backgroundColor: "#b3d89c",
-          //   color: "black",
-          //   transition: "background-color 0.2s ease-in-out",
-          // }}
+          bgColor="transparent"
+          hoverBgColor="#ffffff"
+          textColor="#ffffff"
+          hoverTextColor="#0e0e0e"
+          borderColor="rgba(255, 255, 255, 0.3)"
+          showArrow={true}
           className="card-button"
-        >
-          Read More
-        </button>
+        />
       </Card.Body>
     </Card>
   );

@@ -1,76 +1,246 @@
-@import url("https://fonts.googleapis.com/css2?family=Hind+Madurai:wght@300&family=Lora&family=Montserrat:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700;800&family=Manrope:wght@300;400;500;600;700&display=swap");
 
+/* =====================================================
+   CRED-INSPIRED GLOBAL STYLES
+   Background: #0e0e0e | Text: #f5f5f5 | Secondary: #888888
+   ===================================================== */
+
+/* Modern Reset & Base Styles */
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 html {
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
+body {
+  font-family: 'Inter', 'Manrope', sans-serif;
+  background: #0e0e0e;
+  color: #f5f5f5;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* CRED-Style Ultra Minimal Scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
-  border-radius: 8px;
+  width: 4px;
 }
 
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px grey;
-  /* border-radius: 10px; */
+  background: #0e0e0e;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--green-primary);
-  border-radius: 10px;
+  background: #333333;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--secondary-accent2);
-  border-radius: 10px;
+  background: #444444;
 }
 
-.blog-container {
-  max-width: 1110px;
-  margin: 2.5% auto;
+/* Selection Styling */
+::selection {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
 }
 
-.line {
-  margin: 2px;
+::-moz-selection {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
 }
 
-.blog-title {
-  font-size: 2.5rem;
-  padding-bottom: 4px;
-  font-weight: 400;
-  font-family: monospace;
-  text-align: center;
+/* Global Link Styles */
+a {
+  color: #f5f5f5;
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
 
-.summary {
-  font-size: large;
-  font-weight: bold;
-  text-decoration: underline;
+a:hover {
+  color: #ffffff;
 }
 
-.text-heading {
-  font-size: 2.5rem;
-  padding-bottom: 4px;
-  font-weight: 400;
-  font-family: monospace;
-  text-align: center;
+/* Focus Styles for Accessibility */
+a:focus,
+button:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.3);
+  outline-offset: 2px;
 }
 
-.jist,
-.Detailed {
-  font-size: 1.2rem;
-  padding: 4px 2px;
-  text-align: start;
-  left: 0;
-}
-
-@media (max-width: 500px) {
-  .jist,
-  .Detailed {
-    text-align: center;
+/* ==================== SCROLL REVEAL ANIMATIONS ==================== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+@keyframes glowPulse {
+  0%, 100% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.5); }
+  50% { text-shadow: 0 0 40px rgba(255, 255, 255, 0.8); }
+}
+
+/* ==================== GLOBAL UTILITY CLASSES ==================== */
+/* Scroll Reveal */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Glow Text for Stats */
+.glow-text {
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+/* Grayscale Media Filter */
+.grayscale-filter {
+  filter: grayscale(100%) contrast(120%);
+  transition: filter 0.5s ease;
+}
+
+.grayscale-filter:hover {
+  filter: grayscale(0%) contrast(100%);
+}
+
+/* Glassmorphism Button Style */
+.btn-glassmorphism {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  padding: 16px 40px;
+  border-radius: 50px;
+  font-weight: 500;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.btn-glassmorphism:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Solid White Button */
+.btn-solid-white {
+  background: #ffffff;
+  color: #0e0e0e;
+  border: none;
+  padding: 18px 48px;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-solid-white:hover {
+  transform: scale(1.02);
+  box-shadow: 0 15px 40px rgba(255, 255, 255, 0.15);
+}
+
+/* Dark Card with #333 border */
+.card-dark {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid #333333;
+  border-radius: 16px;
+  transition: all 0.4s ease;
+}
+
+.card-dark:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-4px);
+}
+
+/* ==================== HORIZONTAL SCROLL CONTAINER ==================== */
+.horizontal-scroll {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  padding: 20px 0;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE */
+}
+
+.horizontal-scroll::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+.horizontal-scroll > * {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+}
+
+/* ==================== PARALLAX SECTION ==================== */
+.parallax-section {
+  position: relative;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* ==================== TYPOGRAPHY HELPERS ==================== */
+.serif-heading {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.sans-body {
+  font-family: 'Inter', 'Manrope', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
 }

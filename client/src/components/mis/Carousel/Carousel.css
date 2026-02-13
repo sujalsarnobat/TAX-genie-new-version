@@ -1,32 +1,88 @@
+/* =====================================================
+   CRED-Style Testimonial Carousel
+   Dark cards with #333 border, horizontal scroll
+   ===================================================== */
 .carouselContainer {
     display: flex;
-    /* Use flex display to create a horizontal layout */
     justify-content: space-between;
-    /* Space evenly between items */
     overflow-x: auto;
-    /* Enable horizontal scrolling if needed */
+    padding: 20px 0;
+    /* Hide scrollbar */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
+.carouselContainer::-webkit-scrollbar {
+    display: none;
+}
+
+/* Testimonial Card - #333 border */
 .testimonialContainer {
-    background-color: white;
-    width: 400px;
-    height: 300px;
+    background: rgba(255, 255, 255, 0.01);
+    width: 380px;
+    height: auto;
+    min-height: 300px;
     border-radius: 20px;
-    box-shadow: 0 0 15px -6px black;
+    box-shadow: none;
     margin: 10px;
+    border: 1px solid #333333;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    padding-bottom: 1.5rem;
+}
+
+.testimonialContainer:hover {
+    transform: translateY(-6px);
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.15);
 }
 
 .testimonialHeader {
-    padding: 2rem;
+    padding: 2rem 2rem 1rem;
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: flex-start;
+    gap: 16px;
+}
+
+/* Avatar with #333 border */
+.avatar-placeholder {
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888888;
+    font-weight: 500;
+    font-size: 1.1rem;
+    font-family: "Inter", "Manrope", sans-serif;
+    box-shadow: none;
+    border: 1px solid #333333;
 }
 
 .testimonialBody {
-    text-align: justify;
-    padding-left: 8px;
-    padding-right: 8px;
+    text-align: left;
+    padding: 0 2rem 1rem;
+}
+
+/* Subtle Star Rating - white instead of gold */
+.star-rating {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+    padding: 0 2rem;
+}
+
+.star-rating::before {
+    content: '★★★★★';
+    color: #f5f5f5;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    opacity: 0.6;
 }
 
 .iconContainer {
@@ -36,23 +92,63 @@
 }
 
 .icon {
-    fill: rgb(25, 118, 210);
+    fill: #666666;
 }
 
 .nameContainer {
-    margin-left: 10px;
     text-align: left;
 }
 
-.testimonialBodyText {
-    font-size: 1rem;
-}
-
-p {
-    margin: 0.2rem;
-    font-size: 0.9rem;
-}
-
-h4 {
+/* Serif name */
+.nameContainer h4 {
+    color: #f5f5f5;
     margin: 0;
+    font-weight: 500;
+    font-size: 1.05rem;
+    font-family: "Playfair Display", Georgia, serif;
+}
+
+/* Grey secondary text */
+.nameContainer p {
+    color: #888888;
+    margin: 0.3rem 0 0;
+    font-size: 0.8rem;
+    font-family: "Inter", "Manrope", sans-serif;
+}
+
+/* Grey body text */
+.testimonialBodyText {
+    font-size: 0.9rem;
+    color: #888888;
+    line-height: 1.8;
+    font-family: "Inter", "Manrope", sans-serif;
+    font-style: normal;
+}
+
+/* Subtle quote decoration */
+.testimonialBody::before {
+    content: '"';
+    font-size: 2.5rem;
+    color: rgba(255, 255, 255, 0.08);
+    font-family: "Playfair Display", Georgia, serif;
+    line-height: 1;
+    display: block;
+    margin-bottom: -0.8rem;
+}
+
+/* Dark mode - same style since it's already dark */
+[data-theme="dark"] .testimonialContainer {
+    background: rgba(255, 255, 255, 0.01);
+}
+
+[data-theme="dark"] .testimonialBodyText {
+    color: #888888;
+}
+
+[data-theme="dark"] .icon {
+    fill: #666666;
+}
+
+[data-theme="dark"] .avatar-placeholder {
+    background: rgba(255, 255, 255, 0.05);
 }

@@ -1,0 +1,387 @@
+﻿/* CardShowcase.css - Horizontal Accordion Cards */
+
+.card-showcase-section {
+  background: #0a0a0a;
+  padding: 100px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ambient Glow */
+.card-showcase-section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 400px;
+  background: radial-gradient(ellipse, rgba(74, 222, 128, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Header */
+.card-showcase-header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 60px;
+  position: relative;
+  z-index: 10;
+}
+
+.showcase-badge {
+  display: inline-block;
+  padding: 8px 20px;
+  background: rgba(74, 222, 128, 0.1);
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  color: #4ADE80;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+
+.showcase-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  color: #FFFFFF;
+  margin: 0 0 16px;
+  letter-spacing: -1px;
+}
+
+.showcase-subtitle {
+  font-size: 1.1rem;
+  color: #707070;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* Accordion Container - Flexbox Layout */
+.cards-accordion-container {
+  display: flex;
+  gap: 12px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+  height: 420px;
+}
+
+/* Individual Accordion Card */
+.accordion-card {
+  position: relative;
+  background: rgba(20, 20, 20, 0.95);
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0;
+  padding: 32px 24px;
+  cursor: pointer;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.accordion-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 30%);
+  pointer-events: none;
+}
+
+/* Active card - 60% width */
+.accordion-card.active {
+  flex: 0 0 55%;
+  border-color: var(--card-color);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.4),
+    0 0 40px color-mix(in srgb, var(--card-color) 15%, transparent);
+}
+
+/* Inactive cards - share remaining 40% (roughly 13% each for 3 cards) */
+.accordion-card.inactive {
+  flex: 1;
+  min-width: 0;
+}
+
+.accordion-card.inactive:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(30, 30, 30, 0.95);
+}
+
+/* Card Glow Effect */
+.accordion-card-glow {
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  opacity: 0;
+  filter: blur(60px);
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.accordion-card.active .accordion-card-glow {
+  opacity: 0.4;
+}
+
+/* Progress Ring */
+.accordion-progress-ring {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  margin-bottom: 20px;
+  transition: all 0.4s ease;
+}
+
+.accordion-card.active .accordion-progress-ring {
+  width: 90px;
+  height: 90px;
+}
+
+.progress-ring-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.progress-ring-bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 6;
+}
+
+.progress-ring-fill {
+  fill: none;
+  stroke-width: 6;
+  stroke-linecap: square;
+  transition: stroke-dasharray 0.8s ease;
+}
+
+.progress-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s ease;
+}
+
+.accordion-card.active .progress-icon {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* Card Content */
+.accordion-card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.accordion-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin: 0 0 8px;
+  letter-spacing: -0.5px;
+  transition: all 0.4s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.accordion-card.active .accordion-card-title {
+  font-size: 1.5rem;
+  margin-bottom: 12px;
+  color: var(--card-color);
+  white-space: normal;
+}
+
+.accordion-card-desc {
+  font-size: 0.9rem;
+  color: #808080;
+  line-height: 1.6;
+  margin: 0 0 16px;
+  flex: 1;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+
+.accordion-card.active .accordion-card-desc {
+  opacity: 1;
+  max-height: 100px;
+}
+
+/* Progress Bar */
+.accordion-progress-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+
+.accordion-card.active .accordion-progress-bar {
+  opacity: 1;
+  max-height: 30px;
+}
+
+.accordion-progress-bar .progress-bar-bg {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.accordion-progress-bar .progress-bar-fill {
+  height: 100%;
+  transition: width 0.8s ease;
+}
+
+.progress-percent {
+  font-size: 0.8rem;
+  color: #606060;
+  font-weight: 600;
+  min-width: 36px;
+  text-align: right;
+}
+
+/* CTA Button */
+.accordion-card-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: fit-content;
+  margin-top: auto;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+}
+
+.accordion-card.active .accordion-card-btn {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.accordion-card-btn:hover {
+  background: var(--card-color);
+  border-color: var(--card-color);
+  color: #000;
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.3);
+}
+
+.accordion-card-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: none;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .cards-accordion-container {
+    height: 380px;
+    gap: 10px;
+  }
+  
+  .accordion-card {
+    padding: 24px 16px;
+  }
+  
+  .accordion-card.active {
+    flex: 0 0 50%;
+  }
+}
+
+@media (max-width: 768px) {
+  .card-showcase-section {
+    padding: 60px 16px;
+  }
+  
+  .cards-accordion-container {
+    flex-direction: column;
+    height: auto;
+    max-width: 500px;
+    margin: 0 auto;
+    gap: 8px;
+  }
+  
+  .accordion-card {
+    padding: 20px;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .accordion-card.active,
+  .accordion-card.inactive {
+    flex: none;
+  }
+  
+  .accordion-card.inactive {
+    height: 80px;
+  }
+  
+  .accordion-card.active {
+    height: auto;
+    min-height: 200px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .accordion-progress-ring {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+  
+  .accordion-card.active .accordion-progress-ring {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 16px;
+  }
+  
+  .accordion-card.inactive .accordion-card-title {
+    font-size: 1rem;
+    margin: 0;
+  }
+  
+  .accordion-card.inactive .accordion-card-content {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .accordion-card.active .accordion-card-title {
+    font-size: 1.25rem;
+  }
+  
+  .accordion-card-desc {
+    font-size: 0.85rem;
+  }
+}

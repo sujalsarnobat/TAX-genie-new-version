@@ -8,7 +8,7 @@ import Home from "./pages/Home/Home";
 import { Route, Routes, useLocation } from "react-router-dom";
 import AboutTaxes from "./pages/Taxes/About Taxes/AboutTaxes";
 import Docs from "./pages/Docs-list/Docs";
-import FormFilling from "./pages/Main Form/Form";
+import FormFilling from "./pages/Main Form/FormWizard";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import WhatAreTaxes from "./pages/Taxes/About Taxes/WhatAreTaxes/what-are-taxes";
@@ -26,6 +26,7 @@ import Profile from "./pages/Profile/Profile";
 import Section139_9 from "./pages/Taxes/About Taxes/FAQs/section-139(9)";
 import Section142_1 from "./pages/Taxes/About Taxes/FAQs/section-142(1)";
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import TaxCalculatorPage from "./pages/TaxCalculator/TaxCalculatorPage";
 
 const TRACKING_ID = "G-XLC8JY1HWM"; // OUR_TRACKING_ID
 ReactGA.initialize(TRACKING_ID, { debug: true });
@@ -82,6 +83,7 @@ function App() {
       {!isBlankDocRoute && !loading && <Header />}
       <Routes>
         <Route path="/old" element={<OldMulti />} />
+        <Route path="/tax-calculator" element={<TaxCalculatorPage />} />
         <Route
           path="/"
           element={loading ? <BoxLoader loading={loading} /> : <Home />}

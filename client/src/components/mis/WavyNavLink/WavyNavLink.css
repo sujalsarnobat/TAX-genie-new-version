@@ -1,0 +1,74 @@
+.wavy-nav-link {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 4px 0;
+  text-decoration: none;
+  cursor: pointer;
+  overflow: visible;
+}
+
+.wavy-link-text {
+  display: inline-flex;
+  font-size: var(--font-size, 0.9rem);
+  font-weight: var(--font-weight, 500);
+  font-family: var(--font-sans, "Inter", sans-serif);
+  letter-spacing: 0.02em;
+  color: var(--text-color, #f5f5f5);
+  transition: color 0.3s ease;
+}
+
+.wavy-nav-link:hover .wavy-link-text {
+  color: var(--hover-color, #ffffff);
+}
+
+/* Individual character styling */
+.wavy-char {
+  display: inline-block;
+  transition: transform 0.4s cubic-bezier(0.25, 0.75, 0.25, 1), 
+              opacity 0.3s ease;
+  transform: translateY(0);
+}
+
+/* Wave animation on hover */
+.wavy-char.wave {
+  animation: waveUp 0.5s cubic-bezier(0.25, 0.75, 0.25, 1) forwards;
+}
+
+@keyframes waveUp {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-6px);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Underline styling */
+.wavy-underline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background-color: var(--underline-color, #ffffff);
+  border-radius: 2px;
+  transition: width 0.4s cubic-bezier(0.44, 0, 0.56, 1);
+}
+
+.wavy-underline.expanded {
+  width: 100%;
+}
+
+/* Optional: Add a subtle glow effect on hover */
+.wavy-nav-link:hover .wavy-underline {
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}

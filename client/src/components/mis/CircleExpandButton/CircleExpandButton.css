@@ -1,0 +1,102 @@
+.circle-expand-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px 16px 14px 28px;
+  border: 1px solid var(--btn-border, #ffffff);
+  border-radius: 100px;
+  background: var(--btn-bg, transparent);
+  color: var(--btn-text, #ffffff);
+  font-family: var(--font-sans, "Inter", sans-serif);
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  overflow: hidden;
+  transition: color 0.4s ease, border-color 0.4s ease;
+  outline: none;
+}
+
+.circle-expand-btn:hover {
+  color: var(--btn-hover-text, #0e0e0e);
+  border-color: var(--btn-hover-bg, #ffffff);
+}
+
+/* The expanding circle */
+.circle-expand {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  background: var(--btn-hover-bg, #ffffff);
+  border-radius: 50%;
+  transform: translate(0, -50%) scale(1);
+  transition: transform 0.5s cubic-bezier(0.25, 0.75, 0.25, 1);
+  z-index: 0;
+}
+
+.circle-expand.expanded {
+  transform: translate(0, -50%) scale(12);
+}
+
+/* Button content wrapper */
+.btn-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.btn-text {
+  transition: color 0.4s ease;
+}
+
+/* Arrow wrapper */
+.btn-arrow-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-arrow-circle {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  transition: background-color 0.4s ease;
+}
+
+.circle-expand-btn:hover .btn-arrow-circle {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.btn-arrow-icon {
+  transition: transform 0.4s cubic-bezier(0.25, 0.75, 0.25, 1), color 0.4s ease;
+  color: var(--btn-text, #ffffff);
+}
+
+.circle-expand-btn:hover .btn-arrow-icon {
+  color: var(--btn-hover-text, #0e0e0e);
+}
+
+/* Without arrow variant */
+.circle-expand-btn.no-arrow {
+  padding: 14px 32px;
+}
+
+.circle-expand-btn.no-arrow .circle-expand {
+  right: 50%;
+  transform: translate(50%, -50%) scale(1);
+}
+
+.circle-expand-btn.no-arrow .circle-expand.expanded {
+  transform: translate(50%, -50%) scale(12);
+}
