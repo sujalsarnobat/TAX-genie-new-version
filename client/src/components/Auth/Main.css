@@ -116,3 +116,104 @@
 .password-toggle svg {
   font-size: 1.2rem;
 }
+
+/* ─── OTP Step Styles ─────────────────────── */
+.otp-step {
+  align-items: center;
+}
+
+.otp-header {
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.otp-subtitle {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.otp-subtitle strong {
+  color: #4ADE80;
+  font-weight: 600;
+}
+
+.otp-inputs {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin: 8px 0 4px;
+}
+
+.otp-box {
+  width: 48px;
+  height: 56px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: #FFFFFF;
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-align: center;
+  outline: none;
+  transition: all 0.2s ease;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+
+.otp-box:focus {
+  border-color: #4ADE80;
+  background: rgba(74, 222, 128, 0.05);
+  box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.1);
+}
+
+.otp-box:hover:not(:focus) {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.otp-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 4px;
+}
+
+.otp-resend-btn,
+.otp-back-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.otp-resend-btn:hover:not(:disabled),
+.otp-back-btn:hover {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.otp-resend-btn:disabled {
+  color: rgba(255, 255, 255, 0.2);
+  cursor: not-allowed;
+}
+
+/* ─── Forgot Password Link ─────────────────── */
+.forgot-link {
+  display: block;
+  text-align: center;
+  margin-top: 0.75rem;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.forgot-link:hover {
+  color: #22c55e;
+  text-decoration: underline;
+}

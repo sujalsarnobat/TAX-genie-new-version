@@ -7,6 +7,7 @@ import "./Main.css";
 import { toast } from "react-toastify";
 import { Spinner } from "react-bootstrap";
 import CircleExpandButton from "../mis/CircleExpandButton/CircleExpandButton";
+import { Link } from "react-router-dom";
 
 function SignIn() {
   const [email, setEmail] = useState("");
@@ -27,35 +28,28 @@ function SignIn() {
     setLoading(true);
 
     await axios
-      .post("https://taxsaarthi.onrender.com/user/login", {
+      .post("http://localhost:8000/user/login", {
         email,
         password,
       })
       .then((result) => {
-        console.log(result);
-
-        // Assuming the server responds with a token
-        const token = result.data.token;
+        const { token, user } = result.data;
 
         if (token) {
-          // Store the token in localStorage
           localStorage.setItem("token", token);
-
-          // Optionally, you may want to store other user information
-          localStorage.setItem("userInfo", JSON.stringify(data));
+          localStorage.setItem("userInfo", JSON.stringify(user || data));
 
           toast.success("Login Successful");
           navigate("/docs-list");
-        } else if (result.data === "Password is incorrect") {
-          toast.error("Incorrect Password");
-          setPassword("");
-        } else {
-          toast.error("User Does Not Exist");
         }
       })
       .catch((err) => {
-        console.error(err);
-        toast.error("Try again after sometime");
+        const errData = err.response?.data;
+        if (errData?.errors) {
+          errData.errors.forEach((e) => toast.error(e.message));
+        } else {
+          toast.error(errData?.message || "Something went wrong");
+        }
       })
       .finally(() => {
         setLoading(false);
@@ -98,6 +92,9 @@ function SignIn() {
           {showPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
         </span>
       </div>
+      <Link to="/forgot-password" className="forgot-link">
+        Forgot Password?
+      </Link>
     </Stack>
   );
 }

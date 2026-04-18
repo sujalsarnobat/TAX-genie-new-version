@@ -1,30 +1,116 @@
-const OldReign = require('../Models/OldReign');
+const supabase = require('../Config/supabase');
+const catchAsync = require('../utils/catchAsync');
+const AppError = require('../utils/AppError');
 
-exports.Old = async(req,res) => {
-    try {
-        const oldreign = await OldReign.create(req.body);
-        res.json(oldreign);
-    } catch (error) {
-        res.status(400).json(error);
-    }
-}
+// Helper to convert Mongoose field names to SQL field names (same as TaxController)
+const convertRequestToDbFormat = (data) => {
+  const fieldMap = {
+    FirstName: 'first_name',
+    MiddleName: 'middle_name',
+    LastName: 'last_name',
+    DateOfBirth: 'date_of_birth',
+    FatherName: 'father_name',
+    Gender: 'gender',
+    MaritalStatus: 'marital_status',
+    AadharNo: 'aadhaar_no',
+    PanCard: 'pan_card',
+    MobileNo: 'mobile_no',
+    Email: 'email',
+    Address: 'address',
+    PermanentAddress: 'permanent_address',
+    City: 'city',
+    selectedState: 'state',
+    PinCode: 'pin_code',
+    employerName: 'employer_name',
+    employerAddress: 'employer_address',
+    employerPanNumber: 'employer_pan_number',
+    tanNumber: 'tan_number',
+    employeeReferenceNo: 'employee_reference_no',
+    Year: 'year',
+    TaxDeducted: 'tax_deducted',
+    Salary: 'salary',
+    PrerequisiteIncome: 'prerequisite_income',
+    ProfitIncome: 'profit_income',
+    OtherIncome: 'other_income',
+    HRA: 'hra',
+    LTA: 'lta',
+    OtherExemptedAllowances: 'other_exempted_allowances',
+    ProfessionalTax: 'professional_tax',
+    OwnHouseIncome: 'own_house_income',
+    RentedHouseIncome: 'rented_house_income',
+    DeemdedHouseIncome: 'deemed_house_income',
+    OldFinalTax: 'old_final_tax',
+    OldFinalCess: 'old_final_cess',
+    NewFinalTax: 'new_final_tax',
+    NewFinalCess: 'new_final_cess',
+    PreferredSystem: 'preferred_system',
+    TotalTaxableIncome: 'total_taxable_income',
+    TotalIncome: 'total_income',
+    TotalDeductions: 'total_deductions',
+  };
 
-exports.Oldbody = async(req,res)=>{
-    const {Token} = req.body
-    try {
-        const oldreign = await OldReign.findOne({ Token });
+  // Section 80 fields
+  fieldMap.section80C = 'section_80c';
+  fieldMap.section80CCC = 'section_80ccc';
+  fieldMap.section80CCD1 = 'section_80ccd1';
+  fieldMap.section80CCD2 = 'section_80ccd2';
+  fieldMap.section80CCD1B = 'section_80ccd1b';
+  fieldMap.section80CCF = 'section_80ccf';
+  fieldMap.section80CCG = 'section_80ccg';
+  fieldMap.section80D = 'section_80d';
+  fieldMap.section80DD = 'section_80dd';
+  fieldMap.section80DDB = 'section_80ddb';
+  fieldMap.section80E = 'section_80e';
+  fieldMap.section80EE = 'section_80ee';
+  fieldMap.section80G = 'section_80g';
+  fieldMap.section80GGA = 'section_80gga';
+  fieldMap.section80GGC = 'section_80ggc';
+  fieldMap.section80QQB = 'section_80qqb';
+  fieldMap.section80RRB = 'section_80rrb';
+  fieldMap.section80TTA = 'section_80tta';
+  fieldMap.section80U = 'section_80u';
 
-        if (oldreign) {
-          res.status(200).json(oldreign);
-        } else {
-          res
-            .status(404)
-            .json({ message: "No data found for the provided AadharNo" });
-        }
-    } catch (error) {
-        res.status(500).json({ error: "Internal Server Error" });
-    }
-}
+  const converted = {};
+  for (const [key, value] of Object.entries(data)) {
+    const dbKey = fieldMap[key] || key;
+    converted[dbKey] = value;
+  }
+  return converted;
+};
+
+// Create Old Reign calculation
+exports.Old = catchAsync(async (req, res, next) => {
+  const oldData = convertRequestToDbFormat(req.body);
+  
+  const { data: result, error } = await supabase
+    .from('old_reign_calculations')
+    .insert([oldData])
+    .select();
+
+  if (error || !result || result.length === 0) {
+    throw new AppError(error?.message || 'Failed to save old regime calculation', 500);
+  }
+
+  res.status(201).json({ status: 'success', data: result[0] });
+});
+
+// Get Old Reign calculation by Token
+exports.Oldbody = catchAsync(async (req, res, next) => {
+  const { Token } = req.body;
+  
+  const { data: oldreign, error } = await supabase
+    .from('old_reign_calculations')
+    .select('*')
+    .eq('token', Token)
+    .limit(1)
+    .single();
+
+  if (!oldreign || error) {
+    throw new AppError('No data found for the provided Token', 404);
+  }
+
+  res.status(200).json(oldreign);
+});
 
 
 //Old Tax Reign Calculation
