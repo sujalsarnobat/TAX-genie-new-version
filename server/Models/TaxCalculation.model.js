@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const { getSlabConfig, computeSlabTax } = require('../utils/taxSlabs');
 
 const taxcalculationSchema = new mongoose.Schema(
   {
@@ -80,118 +81,14 @@ const taxcalculationSchema = new mongoose.Schema(
   },
   { timestamps: true }
   );
-  
-  const calculateOldRegimeTax = async function (income) {
-    // Old Regime 2025: Rebate u/s 87A up to 5 lakh taxable income
-    const TAX_REBATE = {
-    old: 500000,
-  };
-  
-  const calculateSlabTax = (income, rate) => income * rate;
-  
-  const calculateCess = (totalTax) => totalTax * 0.04;
-
-  let totalTax = 0;
-
-  if (income >= TAX_REBATE.old) {
-    // Old Regime Tax Slabs (unchanged)
-    // 0 - 2.5 lakh: 0%
-    // 2.5 - 5 lakh: 5%
-    // 5 - 10 lakh: 20%
-    // Above 10 lakh: 30%
-    totalTax += calculateSlabTax(Math.min(income, 250000), 0);
-
-    totalTax += calculateSlabTax(
-      Math.min(Math.max(income - 250000, 0), 500000 - 250000),
-      0.05
-    );
-
-    totalTax += calculateSlabTax(
-      Math.min(Math.max(income - 500000, 0), 1000000 - 500000),
-      0.2
-    );
-
-    totalTax += calculateSlabTax(Math.max(income - 1000000, 0), 0.3);
-  }
-
-  const ceSS = calculateCess(totalTax);
-  const Tax = totalTax + ceSS;
-
-  return { Tax, ceSS };
-};
-
-const calculateNewRegimeTax = async function (income) {
-  // New Regime 2025 (Budget 2024-25)
-  // Tax rebate u/s 87A increased to 12 lakh
-  // Standard deduction increased to 75,000
-  const TAX_REBATE_NEW = {
-    new: 1200000,  // Increased from 7 lakh to 12 lakh
-  };
-
-  const calculateSlabTax = (income, rate) => income * rate;
-
-  let totalTax = 0;
-
-  // New Regime 2025 Tax Slabs:
-  // 0 - 4 lakh: 0%
-  // 4 - 8 lakh: 5%
-  // 8 - 12 lakh: 10%
-  // 12 - 16 lakh: 15%
-  // 16 - 20 lakh: 20%
-  // 20 - 24 lakh: 25%
-  // Above 24 lakh: 30%
-  
-  if (income >= TAX_REBATE_NEW.new) {
-    // 0 - 4 lakh: 0%
-    totalTax += calculateSlabTax(Math.min(income, 400000), 0);
-
-    // 4 - 8 lakh: 5%
-    totalTax += calculateSlabTax(
-        Math.min(Math.max(income - 400000, 0), 400000),
-        0.05
-    );
-
-    // 8 - 12 lakh: 10%
-    totalTax += calculateSlabTax(
-        Math.min(Math.max(income - 800000, 0), 400000),
-        0.1
-    );
-
-    // 12 - 16 lakh: 15%
-    totalTax += calculateSlabTax(
-        Math.min(Math.max(income - 1200000, 0), 400000),
-        0.15
-    );
-
-    // 16 - 20 lakh: 20%
-    totalTax += calculateSlabTax(
-        Math.min(Math.max(income - 1600000, 0), 400000),
-        0.2
-    );
-    
-    // 20 - 24 lakh: 25%
-    totalTax += calculateSlabTax(
-        Math.min(Math.max(income - 2000000, 0), 400000),
-        0.25
-    );
-    
-    // Above 24 lakh: 30%
-    totalTax += calculateSlabTax(Math.max(income - 2400000, 0), 0.3);
-  }
-
-  const calculateCess = (totalTax) => totalTax * 0.04;
-
-  const newcess = calculateCess(totalTax);
-  const newfinaltax = totalTax + newcess;
-
-  return { newfinaltax, newcess };
-};
 
 taxcalculationSchema.pre("save", async function (next) {
+  // Build full name
   this.Name = `${this.FirstName} ${
     this.MiddleName ? this.MiddleName + " " : ""
   }${this.LastName}`;
 
+  // Total income
   this.TotalIncome =
     this.Salary +
     this.PrerequisiteIncome +
@@ -200,6 +97,7 @@ taxcalculationSchema.pre("save", async function (next) {
     this.RentedHouseIncome +
     this.DeemdedHouseIncome;
 
+  // Total deductions
   this.TotalDeductions =
     this.section80C +
     this.section80CCC +
@@ -228,19 +126,30 @@ taxcalculationSchema.pre("save", async function (next) {
 
   this.TotalTaxableIncome = this.TotalIncome - this.TotalDeductions;
 
-  // Standard Deduction increased to Rs 75,000 in Budget 2024-25
-  let StandardDeduction = 75000;
+  // ─── Multi-Year slab lookup ─────────────────────────
+  const config = getSlabConfig(this.Year);
 
-  let OldTaxableIncome =
-    this.TotalIncome - this.TotalDeductions - StandardDeduction;
+  // Old Regime: income − deductions − standard deduction
+  const oldTaxableIncome =
+    this.TotalIncome - this.TotalDeductions - config.standardDeduction;
 
-  const { Tax, ceSS } = await calculateOldRegimeTax(OldTaxableIncome);
-  const { newfinaltax, newcess } = await calculateNewRegimeTax(this.TotalIncome);
+  let oldTax = 0;
+  if (oldTaxableIncome >= config.old.rebateLimit) {
+    oldTax = computeSlabTax(oldTaxableIncome, config.old.slabs);
+  }
+  const oldCess = oldTax * 0.04;
+  this.OldFinalTax = oldTax + oldCess;
+  this.OldFinalCess = oldCess;
 
-  this.OldFinalTax = Tax;
-  this.OldFinalCess = ceSS;
-  this.NewFinalTax = newfinaltax;
-  this.NewFinalCess = newcess;
+  // New Regime: gross total income (no deductions)
+  let newTax = 0;
+  if (this.TotalIncome >= config.new.rebateLimit) {
+    newTax = computeSlabTax(this.TotalIncome, config.new.slabs);
+  }
+  const newCess = newTax * 0.04;
+  this.NewFinalTax = newTax + newCess;
+  this.NewFinalCess = newCess;
+
   this.PreferredSystem =
     this.NewFinalTax < this.OldFinalTax ? "NewRegime" : "OldRegime";
 

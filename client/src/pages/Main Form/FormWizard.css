@@ -503,3 +503,59 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .wizard-container::-webkit-scrollbar-thumb:hover {
   background: #3a3a3a;
 }
+
+/* ─── Auto-Save Resume Banner ─────────────── */
+.autosave-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: rgba(34, 197, 94, 0.08);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  border-radius: 12px;
+  padding: 14px 20px;
+  margin-bottom: 1.25rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.88rem;
+}
+
+.autosave-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.autosave-btn {
+  padding: 6px 16px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+
+.autosave-btn.resume {
+  background: #22c55e;
+  color: #fff;
+}
+.autosave-btn.resume:hover {
+  background: #16a34a;
+}
+
+.autosave-btn.discard {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.autosave-btn.discard:hover {
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+@media (max-width: 480px) {
+  .autosave-banner {
+    flex-direction: column;
+    text-align: center;
+  }
+}

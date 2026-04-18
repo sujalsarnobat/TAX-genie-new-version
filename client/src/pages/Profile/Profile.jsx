@@ -48,7 +48,7 @@ function Profile() {
         console.log(Email);
         const fetchData = async () => {
           await axios
-              .post(`https://taxsaarthi.onrender.com/user/personalInfoaccess`, {
+              .post(`http://localhost:8000/user/personalInfoaccess`, {
                   Email,
               })
               .then((result) => {
@@ -82,7 +82,7 @@ async function handleSubmit(e) {
   e.preventDefault();
 const Token = localStorage.getItem("token");
   await axios
-    .post("https://taxsaarthi.onrender.com/user/personalInfosave", {
+    .post("http://localhost:8000/user/personalInfosave", {
       Token,
       AadharNo,
       FirstName,

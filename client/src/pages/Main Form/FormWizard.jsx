@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import "./FormWizard.css";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -54,6 +54,7 @@ function FormWizard() {
   const [contactInfo, setContactInfo] = useState({
     mobileNo: "",
     email: "",
+    aadharNo: "",
     address: "",
     permanentAddress: "",
     city: "",
@@ -92,7 +93,61 @@ function FormWizard() {
     nps: ""
   });
 
-  // Inline Validation
+  // ─── S-14: Form Auto-Save ──────────────────────────
+  const AUTOSAVE_KEY = "taxsarthi_form_draft";
+  const saveTimer = useRef(null);
+  const [showResumeBanner, setShowResumeBanner] = useState(false);
+  const isRestoring = useRef(false);
+
+  // On mount: check for saved draft
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(AUTOSAVE_KEY);
+      if (saved) {
+        const draft = JSON.parse(saved);
+        // Only show banner if there's meaningful data
+        if (draft.personalInfo?.firstName || draft.incomeInfo?.grossSalary) {
+          setShowResumeBanner(true);
+        }
+      }
+    } catch { /* ignore corrupt data */ }
+  }, []);
+
+  const restoreDraft = useCallback(() => {
+    try {
+      const draft = JSON.parse(localStorage.getItem(AUTOSAVE_KEY));
+      if (!draft) return;
+      isRestoring.current = true;
+      if (draft.personalInfo) setPersonalInfo(draft.personalInfo);
+      if (draft.contactInfo) setContactInfo(draft.contactInfo);
+      if (draft.employerInfo) setEmployerInfo(draft.employerInfo);
+      if (draft.incomeInfo) setIncomeInfo(draft.incomeInfo);
+      if (draft.deductions) setDeductions(draft.deductions);
+      if (draft.currentStep) setCurrentStep(draft.currentStep);
+      toast.info("Draft restored!");
+      // Allow a tick before re-enabling autosave
+      setTimeout(() => { isRestoring.current = false; }, 200);
+    } catch {
+      toast.error("Could not restore draft");
+    }
+    setShowResumeBanner(false);
+  }, []);
+
+  const discardDraft = useCallback(() => {
+    localStorage.removeItem(AUTOSAVE_KEY);
+    setShowResumeBanner(false);
+  }, []);
+
+  // Debounced save whenever form data changes
+  useEffect(() => {
+    if (isRestoring.current) return;
+    if (saveTimer.current) clearTimeout(saveTimer.current);
+    saveTimer.current = setTimeout(() => {
+      const draft = { personalInfo, contactInfo, employerInfo, incomeInfo, deductions, currentStep };
+      localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(draft));
+    }, 800);
+    return () => clearTimeout(saveTimer.current);
+  }, [personalInfo, contactInfo, employerInfo, incomeInfo, deductions, currentStep]);
   const validateField = (name, value, pattern) => {
     if (pattern && value && !pattern.test(value)) {
       return false;
@@ -202,14 +257,62 @@ function FormWizard() {
     setIsSubmitting(true);
     
     try {
-      const response = await axios.post("http://localhost:8000/api/tax/save", {
-        ...personalInfo,
-        ...contactInfo,
-        ...employerInfo,
-        ...incomeInfo,
-        ...deductions
-      });
+      // Get token from localStorage
+      const token = localStorage.getItem("token") || "";
+
+      // Map form fields to backend TaxCalculation model schema
+      const payload = {
+        Token: token,
+        // Personal Info
+        FirstName: personalInfo.firstName,
+        MiddleName: personalInfo.middleName,
+        LastName: personalInfo.lastName,
+        Name: `${personalInfo.firstName} ${personalInfo.middleName} ${personalInfo.lastName}`.replace(/\s+/g, ' ').trim(),
+        DateOfBirth: personalInfo.dateOfBirth,
+        FatherName: personalInfo.fatherName,
+        Gender: personalInfo.gender,
+        MaritalStatus: personalInfo.maritalStatus,
+        PanCard: personalInfo.panCard,
+        // Contact Info
+        MobileNo: Number(contactInfo.mobileNo) || 0,
+        Email: contactInfo.email,
+        AadharNo: Number(contactInfo.aadharNo) || 0,
+        Address: contactInfo.address,
+        PermanentAddress: contactInfo.permanentAddress || contactInfo.address,
+        City: contactInfo.city,
+        selectedState: contactInfo.state,
+        PinCode: contactInfo.pinCode,
+        // Employer Info
+        employerName: employerInfo.employerName,
+        employerAddress: employerInfo.employerAddress,
+        employerPanNumber: employerInfo.employerPan,
+        tanNumber: employerInfo.tanNumber,
+        employeeReferenceNo: employerInfo.employeeRefNo,
+        Year: employerInfo.assessmentYear,
+        TaxDeducted: Number(employerInfo.taxDeducted) || 0,
+        // Income Info
+        Salary: Number(incomeInfo.grossSalary) || 0,
+        PrerequisiteIncome: Number(incomeInfo.perquisites) || 0,
+        ProfitIncome: Number(incomeInfo.profitIncome) || 0,
+        OtherIncome: Number(incomeInfo.allowances) || 0,
+        HRA: Number(incomeInfo.hra) || 0,
+        LTA: Number(incomeInfo.lta) || 0,
+        OtherExemptedAllowances: Number(incomeInfo.otherAllowances) || 0,
+        ProfessionalTax: Number(incomeInfo.professionalTax) || 0,
+        // Deductions
+        section80C: Number(deductions.section80C) || 0,
+        section80D: Number(deductions.section80D) || 0,
+        section80E: Number(deductions.section80E) || 0,
+        section80G: Number(deductions.section80G) || 0,
+        OwnHouseIncome: Number(deductions.homeLoanInterest) || 0,
+        section80CCD1B: Number(deductions.nps) || 0,
+      };
+
+      const response = await axios.post("http://localhost:8000/api/v1/tax/calculations", payload);
       
+      // Clear auto-saved draft on success
+      localStorage.removeItem(AUTOSAVE_KEY);
+
       toast.success("Tax details saved successfully!");
       setTimeout(() => navigate("/doc"), 1500);
     } catch (error) {
@@ -243,6 +346,17 @@ function FormWizard() {
 
   return (
     <div className="wizard-container">
+      {/* Auto-Save Resume Banner */}
+      {showResumeBanner && (
+        <div className="autosave-banner">
+          <span>You have an unsaved draft. Resume where you left off?</span>
+          <div className="autosave-actions">
+            <button className="autosave-btn resume" onClick={restoreDraft}>Resume</button>
+            <button className="autosave-btn discard" onClick={discardDraft}>Discard</button>
+          </div>
+        </div>
+      )}
+
       {/* Progress Bar */}
       <div className="progress-bar-container">
         <div className="progress-bar-fill" style={{ width: `${progressPercent}%` }} />
@@ -420,6 +534,18 @@ function FormWizard() {
                     onChange={(e) => handleInputChange(setContactInfo, 'email', e.target.value)}
                   />
                   {errors.email && <span className="error-message"><AlertCircle size={14} /> {errors.email}</span>}
+                </div>
+
+                <div className="form-field">
+                  <label className="field-label">Aadhaar Number</label>
+                  <input
+                    type="text"
+                    className="field-input"
+                    placeholder="12-digit Aadhaar"
+                    value={contactInfo.aadharNo}
+                    onChange={(e) => handleInputChange(setContactInfo, 'aadharNo', e.target.value.replace(/\D/g, ''))}
+                    maxLength={12}
+                  />
                 </div>
 
                 <div className={`form-field full-width ${errors.address ? 'error' : ''}`}>

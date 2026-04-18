@@ -82,6 +82,7 @@ function Header() {
       items: [
         { label: "File Your Taxes", path: "/taxes/itr-filing" },
         { label: "Tax Notice", path: "/taxes/tax-notice" },
+        { label: "Tax History", path: "/tax-history" },
       ]
     },
     {

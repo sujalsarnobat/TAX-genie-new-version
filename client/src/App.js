@@ -27,13 +27,16 @@ import Section139_9 from "./pages/Taxes/About Taxes/FAQs/section-139(9)";
 import Section142_1 from "./pages/Taxes/About Taxes/FAQs/section-142(1)";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import TaxCalculatorPage from "./pages/TaxCalculator/TaxCalculatorPage";
+import ForgotPassword from "./pages/Auth/ForgotPassword";
+import TaxHistory from "./pages/TaxHistory/TaxHistory";
+import Chatbot from "./components/Chatbot/Chatbot";
 
 const TRACKING_ID = "G-XLC8JY1HWM"; // OUR_TRACKING_ID
 ReactGA.initialize(TRACKING_ID, { debug: true });
 
 function App() {
   const location = useLocation();
-  const isBlankDocRoute = location.pathname === "/doc";
+  const isBlankDocRoute = location.pathname === "/doc" || location.pathname === "/forgot-password";
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -190,6 +193,18 @@ function App() {
           element={loading ? <BoxLoader loading={loading} /> : <OutPutDoc />}
         />
 
+        {/* Forgot Password */}
+        <Route
+          path="/forgot-password"
+          element={<ForgotPassword />}
+        />
+
+        {/* Tax Filing History */}
+        <Route
+          path="/tax-history"
+          element={loading ? <BoxLoader loading={loading} /> : <TaxHistory />}
+        />
+
         {/* Profile Routes */}
         <Route
           path="/profile"
@@ -197,6 +212,7 @@ function App() {
         />
       </Routes>
       {!isBlankDocRoute && !loading && <Footer />}
+      <Chatbot />
       <SpeedInsights />
       <ToastContainer
         position="bottom-center"
